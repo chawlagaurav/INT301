@@ -1,0 +1,21 @@
+import pandas as pd
+from tqdm.notebook import tqdm
+import snscrape.modules.twitter as sntwitter
+
+scraper = sntwitter.TwitterSearchScraper('#python')
+tweets = []
+for i, tweet in enumerate (scraper.get_items()):
+    data = [
+        tweet.date,
+        tweet.id,
+        tweet.rawContent,
+        tweet.media,
+        tweet.user.username
+    ]
+    tweets.append(data)
+    if i>50:
+        break
+
+tweet_df = pd.DataFrame(tweets,columns=["date","id","content","media","username"])
+
+tweet_df.to_csv('python.tweets.csv',index=False)
